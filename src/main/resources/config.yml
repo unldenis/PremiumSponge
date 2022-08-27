@@ -1,0 +1,29 @@
+radius-spawn: 100
+min-depth: 25
+number-of-sponges: 100 # -1 if random
+durability-level: 1
+wipe:
+  name: "Wipe"
+  lore:
+    - "Line 1"
+    - "Line 2"
+helmet:
+  name: "Helmet"
+  lore:
+    - "Line 1"
+    - "Line 2"
+chestPlate:
+  name: "ChestPlate"
+  lore:
+    - "Line 1"
+    - "Line 2"
+leggings:
+  name: "Leggings"
+  lore:
+    - "Line 1"
+    - "Line 2"
+boots:
+  name: "Boots"
+  lore:
+    - "Line 1"
+    - "Line 2"
