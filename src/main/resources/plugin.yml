@@ -1,7 +1,7 @@
-name: PremiumSponge
+name: Minerai-Mithril
 version: '${project.version}'
 main: com.github.unldenis.premiumsponge.PremiumSponge
-softdepend: [ WorldGuard ]
+depend: [ WorldGuard ]
 authors: [ unldenis ]
 commands:
   removesponges:

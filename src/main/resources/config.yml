@@ -27,3 +27,7 @@ boots:
   lore:
     - "Line 1"
     - "Line 2"
+
+# Maximum millis that the thread setting the blocks should take per tick.
+# Should be below 25.
+MaxMillisPerTick: 12

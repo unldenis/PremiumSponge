@@ -28,12 +28,12 @@ public class SpongeListener implements Listener {
 
       var plugin = PremiumSponge.getInstance();
       var gen = plugin.gen();
-      int index = gen.isPresent(new Vec3(loc));
-      if (index >= 0) {
+      var vec = gen.isPresent(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+      if (vec != null) {
         event.setCancelled(true);
         event.getBlock().setType(Material.AIR);
 
-        gen.remove(index);
+        gen.remove(vec);
 
         var item = new ItemStack(351, 1, (short) 5);
         var meta = item.getItemMeta();

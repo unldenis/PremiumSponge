@@ -6,6 +6,7 @@ import com.github.unldenis.premiumsponge.data.DataManager;
 import com.github.unldenis.premiumsponge.generator.SpongeGen;
 import com.github.unldenis.premiumsponge.listener.SpongeListener;
 import com.github.unldenis.premiumsponge.recipe.CustomRecipe;
+import com.github.unldenis.premiumsponge.task.WorkloadThread;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.bukkit.Bukkit;
@@ -20,6 +21,10 @@ public final class PremiumSponge extends JavaPlugin {
   private String wipeName;
   private List<String> wipeLore;
 
+  private WorkloadThread workloadThread;
+
+  private WorldGuardSupport worldGuardSupport;
+
   public static PremiumSponge getInstance() {
     return INSTANCE;
   }
@@ -33,8 +38,13 @@ public final class PremiumSponge extends JavaPlugin {
 
     var cfg = config.getConfig();
 
+    workloadThread = new WorkloadThread(cfg.getInt("MaxMillisPerTick"));
+    Bukkit.getScheduler().runTaskTimer(this, workloadThread, 1L, 1L);
+
     wipeName = cfg.getString("wipe.name");
     wipeLore = cfg.getStringList("wipe.lore");
+
+    worldGuardSupport = new WorldGuardSupport();
 
     gen = new SpongeGen(Bukkit.getWorld("world"), cfg.getInt("radius-spawn"),
         cfg.getInt("min-depth"), cfg.getInt("number-of-sponges"));
@@ -45,6 +55,8 @@ public final class PremiumSponge extends JavaPlugin {
     this.getCommand("removesponges").setExecutor(new RemoveSpongesCommand());
 
     new CustomRecipe(cfg).load();
+
+
   }
 
   @Override
@@ -72,6 +84,14 @@ public final class PremiumSponge extends JavaPlugin {
 
   public List<String> wipeLore() {
     return wipeLore;
+  }
+
+  public WorkloadThread workloadThread() {
+    return workloadThread;
+  }
+
+  public WorldGuardSupport worldGuardSupport() {
+    return worldGuardSupport;
   }
 }
 
