@@ -1,15 +1,15 @@
 package com.github.unldenis.premiumsponge.generator;
 
 import com.github.unldenis.premiumsponge.PremiumSponge;
+import com.github.unldenis.premiumsponge.WorldGuardSupport;
 import com.github.unldenis.premiumsponge.task.PlaceableBlock;
+import com.github.unldenis.premiumsponge.task.WorkloadThread;
 import com.github.unldenis.premiumsponge.util.Vec3;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
-import javax.swing.plaf.PanelUI;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -38,7 +38,7 @@ public final class SpongeGen {
 
   private void place(Vec3 loc) {
 //    world.getBlockAt(loc.x(), loc.y(), loc.z()).setType(Material.SPONGE, true);
-    var thread = PremiumSponge.getInstance().workloadThread();
+    WorkloadThread thread = PremiumSponge.getInstance().workloadThread();
     thread.addLoad(
         new PlaceableBlock(world, loc, Material.SPONGE));
   }
@@ -53,10 +53,10 @@ public final class SpongeGen {
   }
 
   public void start() {
-    var wg = PremiumSponge.getInstance().worldGuardSupport();
-    var logger = PremiumSponge.getInstance().getLogger();
+    WorldGuardSupport wg = PremiumSponge.getInstance().worldGuardSupport();
+    Logger logger = PremiumSponge.getInstance().getLogger();
     logger.info("Generating the sponges...");
-    var center = new Vec3(world.getSpawnLocation());
+    Vec3 center = new Vec3(world.getSpawnLocation());
 
     //generate 2 * number_of_sponges1 random number between -radius to radius
     int[] randomIntsArray = IntStream.generate(() -> ThreadLocalRandom.current().nextInt(-radius, radius)).limit(number_of_sponges1 * 2L).toArray();
@@ -104,7 +104,7 @@ public final class SpongeGen {
   }
 
   public Vec3 isPresent(int x, int y, int z) {
-    for (var vec : sponges) {
+    for (Vec3 vec : sponges) {
       if (vec.x() == x && vec.y() == y && vec.z() == z) {
         return vec;
       }
@@ -120,13 +120,12 @@ public final class SpongeGen {
     if (sponges == null) {
       return;
     }
-    var thread = PremiumSponge.getInstance().workloadThread();
-    for (var vec : sponges) {
-      if (vec != Vec3.REMOVED) {
+    WorkloadThread thread = PremiumSponge.getInstance().workloadThread();
+    for (Vec3 vec : sponges) {
 //        world.getBlockAt(vec.x(), vec.y(), vec.z()).setType(Material.AIR);
-        thread.addLoad(
-            new PlaceableBlock(world, vec, Material.AIR));
-      }
+      thread.addLoad(
+          new PlaceableBlock(world, vec, Material.AIR));
+
     }
   }
 

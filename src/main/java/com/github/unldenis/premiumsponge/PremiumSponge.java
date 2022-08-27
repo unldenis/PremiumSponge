@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PremiumSponge extends JavaPlugin {
@@ -34,9 +36,9 @@ public final class PremiumSponge extends JavaPlugin {
     // Plugin startup logic
     INSTANCE = this;
 
-    var config = new DataManager(this, "config.yml");
+    DataManager config = new DataManager(this, "config.yml");
 
-    var cfg = config.getConfig();
+    FileConfiguration cfg = config.getConfig();
 
     workloadThread = new WorkloadThread(cfg.getInt("MaxMillisPerTick"));
     Bukkit.getScheduler().runTaskTimer(this, workloadThread, 1L, 1L);
@@ -46,7 +48,7 @@ public final class PremiumSponge extends JavaPlugin {
 
     worldGuardSupport = new WorldGuardSupport();
 
-    gen = new SpongeGen(Bukkit.getWorld("world"), cfg.getInt("radius-spawn"),
+    gen = new SpongeGen(Bukkit.getWorld(cfg.getString("world")), cfg.getInt("radius-spawn"),
         cfg.getInt("min-depth"), cfg.getInt("number-of-sponges"));
     gen.start();
 

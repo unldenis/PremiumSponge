@@ -11,7 +11,7 @@ public class RemoveSpongesCommand implements CommandExecutor {
   @Override
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
     if (sender.hasPermission("premiumsponge.admin")) {
-      var plugin = PremiumSponge.getInstance();
+      PremiumSponge plugin = PremiumSponge.getInstance();
       if (plugin.disabled().compareAndSet(false, true)) {
         plugin.gen().removeAll();
         sender.sendMessage(ChatColor.LIGHT_PURPLE + "Removed sponges");

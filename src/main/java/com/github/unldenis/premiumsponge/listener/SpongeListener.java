@@ -1,9 +1,11 @@
 package com.github.unldenis.premiumsponge.listener;
 
 import com.github.unldenis.premiumsponge.PremiumSponge;
+import com.github.unldenis.premiumsponge.generator.SpongeGen;
 import com.github.unldenis.premiumsponge.util.Vec3;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -12,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class SpongeListener implements Listener {
 
@@ -22,21 +25,21 @@ public class SpongeListener implements Listener {
 
   @EventHandler
   public void onBreak(BlockBreakEvent event) {
-    var type = event.getBlock().getType();
+    Material type = event.getBlock().getType();
     if (type == Material.SPONGE) {
-      var loc = event.getBlock().getLocation();
+      Location loc = event.getBlock().getLocation();
 
-      var plugin = PremiumSponge.getInstance();
-      var gen = plugin.gen();
-      var vec = gen.isPresent(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+      PremiumSponge plugin = PremiumSponge.getInstance();
+      SpongeGen gen = plugin.gen();
+      Vec3 vec = gen.isPresent(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
       if (vec != null) {
         event.setCancelled(true);
         event.getBlock().setType(Material.AIR);
 
         gen.remove(vec);
 
-        var item = new ItemStack(351, 1, (short) 5);
-        var meta = item.getItemMeta();
+        ItemStack item = new ItemStack(351, 1, (short) 5);
+        ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(plugin.wipeName());
         meta.setLore(plugin.wipeLore());
         item.setItemMeta(meta);

@@ -2,6 +2,7 @@ radius-spawn: 100
 min-depth: 25
 number-of-sponges: 100 # -1 if random
 durability-level: 1
+world: "world"
 wipe:
   name: "Wipe"
   lore:
